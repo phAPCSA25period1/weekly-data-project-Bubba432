@@ -200,5 +200,23 @@ You must:
   - Your chosen project theme  
   - A short description of your program
 
+---
+
+## 👤 Project Information
+
+**Developer:** Bubba432
+
+**Project Theme:** Water Intake Tracker
+
+**Description:** 
+This program tracks daily water consumption over a week and provides analysis and insights about hydration habits. Users input the number of cups of water they drank each day, and the program calculates:
+- Total water consumption for the week
+- Average daily intake
+- The day with the highest and lowest water consumption
+- How many days they met the 8-cup daily goal
+- Personalized insights and recommendations based on their hydration patterns
+
+The program demonstrates proper OOP principles with encapsulation (private data array), input validation (preventing negative values), array algorithms (sum, average, min, max), and user-friendly formatted output.
+
 
 
