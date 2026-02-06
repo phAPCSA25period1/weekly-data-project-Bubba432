@@ -22,43 +22,46 @@ public class App {
 
     /**
      * Main method that runs the Water Intake Tracker application.
-     * 
-     * This method:
-     * 1. Initializes a Scanner for user input
-     * 2. Displays program information
-     * 3. Collects daily water intake data with input validation
-     * 4. Creates a WeeklyData object to analyze the data
-     * 5. Displays statistical results (total, average, min, max)
-     * 6. Provides personalized insights and recommendations
+     * Demonstrates method encapsulation by delegating tasks to helper methods.
      * 
      * @param args Command-line arguments (not used in this application)
      */
     public static void main(String[] args) {
-
-        // TODO 1: Create a Scanner for user input
         Scanner scanner = new Scanner(System.in);
+        
+        // Delegate to helper methods for clean, readable code
+        displayProgramInfo();
+        double[] weekData = collectWeeklyData(scanner);
+        WeeklyData tracker = new WeeklyData(weekData);
+        displayResults(tracker);
+        displayInsights(tracker, weekData);
+        
+        scanner.close();
+    }
 
-        // TODO 2: Give information about your program
-        //         Ask the user about their goals (if applicable)
+    /**
+     * Displays the program header and introductory information.
+     * This method encapsulates the program display logic.
+     */
+    private static void displayProgramInfo() {
         System.out.println("===========================================");
         System.out.println("    Water Intake Tracker for the Week       ");
         System.out.println("===========================================");
         System.out.println("Track your daily water consumption in cups.");
         System.out.println("Recommended daily intake: 8 cups");
         System.out.println();
+    }
 
-        // TODO 3: Create an array to hold 7 days of data
-        //         Use an appropriate data type (int or double)
-        //         Name the array weekData
+    /**
+     * Collects daily water intake data from the user with input validation.
+     * This method encapsulates all data collection and validation logic.
+     * 
+     * @param scanner The Scanner object for reading user input
+     * @return An array of 7 double values representing water intake for each day
+     */
+    private static double[] collectWeeklyData(Scanner scanner) {
         double[] weekData = new double[7];
-
-        // TODO 4: Use a for loop to collect data for each day of the week
-        //         Prompt example:
-        //         "Enter <data type> for day X: "
-        //
-        //         Include input validation:
-        //         - Use a while loop to prevent negative values
-        //         - Re-prompt if the value is invalid
+        
         for (int i = 0; i < weekData.length; i++) {
             boolean validInput = false;
             while (!validInput) {
@@ -78,21 +81,18 @@ public class App {
             }
         }
         scanner.nextLine(); // Clear newline from last input
-
         System.out.println();
+        
+        return weekData;
+    }
 
-        // TODO 5: Create a WeeklyData object
-        //         Pass the weekData array into the constructor
-        WeeklyData tracker = new WeeklyData(weekData);
-
-        // TODO 6: Display the results of the analysis
-        //         Call methods from WeeklyData to display:
-        //         - Total
-        //         - Average
-        //         - Minimum
-        //         - Maximum
-        //
-        //         Use clear labels and formatted output if needed
+    /**
+     * Displays the weekly statistical summary of water intake.
+     * This method encapsulates the results display logic.
+     * 
+     * @param tracker The WeeklyData object containing the analysis
+     */
+    private static void displayResults(WeeklyData tracker) {
         System.out.println("===========================================");
         System.out.println("         Weekly Summary Report              ");
         System.out.println("===========================================");
@@ -101,27 +101,25 @@ public class App {
         System.out.printf("Highest Day:          %.1f cups%n", tracker.getMax());
         System.out.printf("Lowest Day:           %.1f cups%n", tracker.getMin());
         System.out.println();
-
-        // TODO 7: Display the full week of data
-        //         Use the toString() method from WeeklyData
+        
         System.out.println("All Daily Values:");
         System.out.println(tracker.toString());
+    }
 
-        // TODO 8: Give the user insights about their week
-        //         --> "You need to drink more water next week!"
-        //         --> "You were very hydrated this week!"
-        //         --> etc.
+    /**
+     * Displays personalized insights and recommendations based on weekly data.
+     * This method encapsulates all insight logic and analysis.
+     * 
+     * @param tracker The WeeklyData object containing the analysis
+     * @param weekData The array of daily water intake values
+     */
+    private static void displayInsights(WeeklyData tracker, double[] weekData) {
         System.out.println("===========================================");
         System.out.println("           Weekly Insights                 ");
         System.out.println("===========================================");
         
         double average = tracker.getAverage();
-        int daysMetGoal = 0;
-        for (int i = 0; i < weekData.length; i++) {
-            if (weekData[i] >= 8) {
-                daysMetGoal++;
-            }
-        }
+        int daysMetGoal = countDaysMetGoal(weekData);
         
         System.out.println("Days you met the 8-cup goal: " + daysMetGoal + "/7");
         
@@ -141,7 +139,22 @@ public class App {
         } else if (daysMetGoal >= 5) {
             System.out.println("You had a great week! Focus on the remaining days.");
         }
-        
-        scanner.close();
+    }
+
+    /**
+     * Helper method to count how many days met the 8-cup hydration goal.
+     * This method encapsulates a specific calculation.
+     * 
+     * @param weekData The array of daily water intake values
+     * @return The number of days where intake was 8 cups or more
+     */
+    private static int countDaysMetGoal(double[] weekData) {
+        int daysMetGoal = 0;
+        for (int i = 0; i < weekData.length; i++) {
+            if (weekData[i] >= 8) {
+                daysMetGoal++;
+            }
+        }
+        return daysMetGoal;
     }
 }
